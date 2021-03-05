@@ -1,0 +1,172 @@
+
+#include<bits/stdc++.h>
+
+#define PI (atan(1.0)*4)
+#define APROX 17
+#define lim_0 1e-9
+using namespace std;
+
+double factorial(int num);
+double seno(double angulo);	
+double cose(double angulo);
+double tang(double angulo);
+double euler(int grado);		
+double K(double x,double indice);
+double S(double x);
+double convertir(double x);
+double e();
+int main(){
+	int op;
+	do{
+		
+		cout<<"0) Salir \n";
+		cout<<"1) Calculo de e\n";
+		cout<<"2) Cálculo de e^x\n";
+		cout<<"3) Cálculo del factorial\n";
+		cout<<"4) Cálculo del seno\n";
+		cout<<"5) Cálculo del coseno\n";
+		cout<<"6) Calculo de la tangente\n";
+		cout<<"7) Cálculo de la serie\n";
+		
+		cout<<"Digite opción : \n";
+		cin>>op;
+		
+		switch(op){
+			case 0:{
+				cout<<"Fin del programa \n";
+				break;				
+			}
+			case 1:{
+				cout<<"El valor es :";
+				cout<<e()<<endl;
+				break;
+			}
+			case 2:{
+				int grado;
+				cout<<"Digite grado\n";			
+				cin>>grado;
+				cout<<"EL resultado es :";
+				cout<<euler(grado)<<endl;
+				break;
+			}
+			case 3:{
+				int numero;
+				cout<<"Digite numero\n";
+				cin>>numero;
+				cout<<"El factorial es :";
+				cout<<factorial(numero)<<endl;
+				break;
+			}
+			case 4:{
+				double angulo;
+				cout<<"Digite angulo\n";
+				cin>>angulo;
+				cout<<"El seno es :";
+				cout<<seno(convertir(angulo))<<endl;
+				break;
+			}
+			case 5:{
+				double angulo;
+				cout<<"Digite angulo\n";
+				cin>>angulo;
+				cout<<"El coseno es :";
+				cout<<cose(convertir(angulo))<<endl;
+				break;
+			}
+			case 6:{
+				double angulo;
+				cout<<"Digite angulo\n";
+				cin>>angulo;
+				cout<<"La tangente es :";
+				cout<<tang(convertir(angulo))<<endl;
+				break;
+			}
+			case 7:{
+				double x;
+				cout<<"Digite x\n";
+				cin>>x;
+				cout<<"La serie es :";
+				cout<<S(x)<<endl;
+				break;
+			}
+		}
+	}while(op!=0);
+	
+	return 0;
+}
+double convertir(double x){
+	return (x/180)*PI;
+}
+double factorial(int num){
+	double res=1;	
+	if(num==0)return res;
+	for(int i=1;i<=num;i++){
+		res*=i;
+		}
+	return res;	
+}
+double e(){
+	double res=1;
+	for(double i=1;i<=APROX;i++){
+			
+			double denominador=factorial(i);
+			res+=(1/denominador);
+	}
+	return res;
+}
+double euler(int grado){
+	double res=0;
+	for(int i=0;i<=APROX;i++){
+		double numerador=pow(grado,i);
+		double denominador=(factorial(i));
+		res+=(numerador/denominador);
+	}
+	return res; 	
+}
+double cose(double angulo){
+	double res=0;
+	int indice=0;
+	for(int i=0;i<=APROX;i+=2){
+		double numerador=pow(angulo,i);
+		double denominador=(factorial(i));
+		res+=((numerador/denominador)*pow(-1,indice));
+		indice=1-indice;
+	}
+	return res;
+}
+
+double seno(double angulo){
+	double res=0;
+	int indice=0;
+	for(int i=1;i<=APROX;i+=2){
+		double numerador=pow(angulo,i);
+		double denominador=(factorial(i));
+		res+=((numerador/denominador)*pow(-1,indice));
+		indice=1-indice;
+	}
+	return res;
+}
+double tang(double angulo){
+	return (seno(angulo)/cose(angulo));
+}
+
+double K(double x,double indice){
+	double res=0;
+	double pri=indice*2;
+	double seg=indice*2-1;
+	double firs1=pri*sqrt(tang(convertir(x)));
+	double firs2=seg*sqrt((euler(x-2)/(euler(x-1))));
+	double secon=seg*sqrt(x+sqrt(pri*x));
+	res=(((firs1+firs2)/secon));
+	return res;		
+}
+
+double S(double x){
+	double res=0;
+	int indice =0;
+	for(double i=1;i<=APROX;i++){
+		res+=(K(x,i)*pow(-1,indice));
+		indice=1-indice;		
+	}
+	return res;
+}
