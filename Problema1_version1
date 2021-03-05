@@ -1,5 +1,6 @@
 
-#include<bits/stdc++.h>
+#include<iostream>
+#include<math.h>
 
 #define PI (atan(1.0)*4)
 #define APROX 17
