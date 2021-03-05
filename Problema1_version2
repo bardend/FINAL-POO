@@ -1,0 +1,178 @@
+#include<iostream>
+#include<math.h>
+const double pi=3.141592;
+const int apro=17;
+
+using namespace std;
+float factorial(int numero);
+float e();
+float seno(float angulo);	
+float coseno(float angulo);
+float tangente(float angulo);
+float euler(int exponente);	
+float serie_k(float x,float indice);
+float serie_s(float x);
+
+int main(){
+	char opcion;
+	do{	
+		cout<<"a) Salir \n";
+		cout<<"b) Cálculo de e\n";
+		cout<<"c) Cálculo de e^x\n";
+		cout<<"d) Cálculo del factorial\n";
+		cout<<"e) Cálculo del seno\n";
+		cout<<"f) Cálculo del coseno\n";
+		cout<<"g) Calculo de la tangente\n";
+		cout<<"h) Cálculo de la serie\n";
+		
+		cout<<"Digite opción :";
+		cin>>opcion;
+		
+		switch(opcion){
+			case 'a':{
+				cout<<"SALIR \n";
+				break;				
+			}
+			case 'b':{
+				cout<<"EL VALOR DE EULER ES :";
+				cout<<e()<<endl;
+				break;
+			}
+			case 'c':{
+				int exponente;
+				cout<<"Digite exponente\n";			
+				cin>>exponente;
+				cout<<"EL VALOR ES :";
+				cout<<euler(exponente)<<endl;
+				break;
+			}
+			case 'd':{
+				int numero;
+				cout<<"Digite numero\n";
+				cin>>numero;
+				cout<<"EL FACTORIAL ES :";
+				cout<<factorial(numero)<<endl;
+				break;
+			}
+			case 'e':{
+				float angulo;
+				cout<<"Digite angulo en sexagesimales \n";
+				cin>>angulo;
+				cout<<"EL SENO ES :";
+				angulo=(angulo/180)*pi;
+				cout<<seno(angulo)<<endl;
+				break;
+			}
+			case 'f':{
+				float angulo;
+				cout<<"Digite angulo en sexagesimales \n";
+				cin>>angulo;
+				cout<<"EL COSENO ES :";
+				angulo=(angulo/180)*pi;
+				cout<<coseno(angulo)<<endl;
+				break;
+			}
+			case 'g':{
+				float angulo;
+				cout<<"Digite angulo en sexagesimales \n";
+				cin>>angulo;
+				cout<<"LA TANGENTE ES :";
+				angulo=(angulo/180)*pi;
+				cout<<tangente(angulo)<<endl;
+				break;
+			}
+			case 'h':{
+				float x;
+				cout<<"Digite x\n";
+				cin>>x;
+				cout<<"LA SERIE ES :";
+				cout<<serie_s(x)<<endl;
+				break;
+			}
+		}		
+	}while(opcion!='a');
+
+return 0;}
+
+float factorial(int num){
+	float fac=1;	
+	if(num==0)return fac;
+	for(int i=1;i<=num;i++){
+		fac*=(float)i;
+		}
+	return fac;	
+}
+
+float e(){
+	float ans=1;
+	for(int i=1;i<=apro;i++){
+			float denominador=factorial(i);
+			ans+=(1/denominador);
+	}
+	return ans;
+}
+
+float euler(int exponente){
+	float ans=0;
+	for(int i=0;i<=apro;i++){
+		ans+=(pow(exponente,i)/(factorial(i)));
+	}
+	return ans; 	
+}
+
+float coseno(float angulo){
+	float ans=0;
+	int indice=2;
+	for(int i=0;i<=apro;i+=2){	
+		ans+=((pow(angulo,i)/(factorial(i)))*pow(-1,indice));
+		if(indice==1)
+			indice=2;
+		else if(indice==2)
+			indice=1;
+	}
+	return ans;
+}
+
+float seno(float angulo){
+	float ans=0;
+	int indice=2;
+	for(int i=1;i<=apro;i+=2){
+		ans+=((pow(angulo,i))/(factorial(i)))*pow(-1,indice);
+		if(indice==1)
+			indice=2;
+		else if(indice==2)
+			indice=1;	
+	}
+	return ans;
+}
+
+float tangente(float angulo){
+	float ans;
+	float numerador=seno(angulo);
+	float denominador=coseno(angulo);
+	ans=(numerador/denominador);
+	return ans;
+}
+
+
+float serie_k(float x,float indice){
+	float ans=0;
+	float angulo_convertido=(x/180)*pi;
+	float a=(indice*2)*sqrt(tangente(angulo_convertido));
+	float b=(indice*2-1)*sqrt((euler(x-2)/(euler(x-1))));
+	float c=(indice*2-1)*sqrt(x+sqrt((indice*2)*x));
+	ans=((a+b)/c);
+	return ans;		
+}
+float serie_s(float x){
+	float ans=0;
+	int indice =2;
+	for(float i=1;i<=apro;i++){
+		ans+=(serie_k(x,i)*pow(-1,indice));
+		if(indice==1)
+			indice=2;
+		else if(indice==2)
+			indice=1;		
+	}
+	return ans;
+}
